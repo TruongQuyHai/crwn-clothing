@@ -48,16 +48,16 @@ const SignUpForm = () => {
       const userDocRef = await createUserDocumentFromAuth(user, {
         displayName: displayName,
       });
-      resetFormFields();
     } catch (err) {
       if (err.code === "auth/email-already-in-use")
         alert("Email already in used.");
+      resetFormFields();
     }
   };
 
   return (
     <div className="sign-up-container">
-      <h2>Don't have an account?</h2>
+      <h2>I don't have an account</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
