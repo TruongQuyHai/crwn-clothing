@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import {
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
@@ -10,6 +9,7 @@ import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 
 import "./sign-in-form.styles.scss";
+import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
   emailSignIn: "",
@@ -32,11 +32,10 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      const { user } = await signInAuthUserWithEmailAndPassword(
         emailSignIn,
         passwordSignIn
       );
-      console.log(response);
     } catch (err) {
       console.log(err);
       switch (err.code) {
@@ -55,8 +54,7 @@ const SignInForm = () => {
 
   const logGoogleUser = async () => {
     try {
-      const { user } = await signInWithGooglePopup();
-      const userDocRef = await createUserDocumentFromAuth(user);
+      await signInWithGooglePopup();
     } catch (err) {
       if (err.code === "auth/cancelled-popup-request") return;
     }
